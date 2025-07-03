@@ -1,0 +1,1219 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>EstateFlow</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <style type="text/tailwindcss">
+        body {
+      font-family: 'Inter', sans-serif;
+      @apply bg-pink-100 transition-colors duration-300;
+    }
+    .hero-section {
+  background-image: url('./HeroImage.png');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  z-index: 1;
+}
+.hero-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  /* Gradient: transparent at top, dark at bottom */
+  background: linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(76, 76, 76, 0.85) 100%);
+  /* background: linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(31,41,55,0.85) 100%); */
+  pointer-events: none;
+}
+    .hero-section > .container {
+        position: relative;
+        z-index: 1;
+    }
+    .btn-primary {
+      @apply bg-red-500 text-white py-3 px-6 rounded-md font-medium transition-colors duration-300 ease-in-out;
+    }
+    .btn-primary:hover {
+      @apply bg-red-600;
+    }
+    .btn-secondary {
+      @apply bg-amber-500 text-white py-2 px-4 rounded-md font-medium transition-colors duration-300 ease-in-out;
+    }
+    .btn-secondary:hover {
+      @apply bg-amber-600;
+    }
+    .section-title {
+      @apply text-gray-800 text-3xl font-semibold mb-4;
+    }
+    .section-subtitle {
+      @apply text-gray-600 text-lg mb-10;
+    }
+    .card {
+      @apply bg-white rounded-lg p-6 shadow-lg flex flex-col;
+    }
+    .service-card,
+    .step-content-interactive {
+      @apply relative;
+    }
+    .service-card:hover,
+    .step-content-interactive:hover:not(.active) {
+      @apply transform scale-105 shadow-xl transition-all duration-300 ease-in-out;
+    }
+    .service-card .tooltip,
+    .step-content-interactive .tooltip {
+      @apply absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-auto min-w-max max-w-xs bg-gray-800 text-white text-xs rounded-md p-2 opacity-0 invisible transition-opacity duration-300 ease-in-out pointer-events-none z-20 whitespace-normal text-center;
+    }
+    .service-card:hover .tooltip,
+    .step-content-interactive:hover .tooltip {
+      @apply opacity-100 visible;
+    }
+    .testimonial-card {
+      @apply bg-gray-50 flex-shrink-0 w-full md:w-[calc(50%-2rem)] xl:w-[calc(50%-4rem)];
+    }
+    .faq-item {
+      @apply border-b border-gray-200 ;
+    }
+    .nav-link {
+      @apply text-gray-600 font-medium transition-colors duration-300 ease-in-out;
+    }
+    .nav-link:hover {
+      @apply text-red-500 dark:text-red-400;
+    }
+    .active-nav-link {
+      @apply text-red-500 dark:text-red-400 font-semibold;
+    }
+    .step-item-interactive {
+      @apply relative flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/6 p-4;
+    }
+    .step-content-interactive {
+      @apply bg-white rounded-lg shadow-lg p-6 text-center transition-all duration-300 ease-in-out h-full cursor-pointer;
+    }
+    .step-content-interactive.active {
+      @apply ring-2 ring-red-500 scale-105 z-10;
+    }
+    .step-icon-interactive {
+      @apply bg-red-500 text-white w-16 h-16 rounded-full flex items-center justify-center mb-4 mx-auto text-3xl;
+    }
+    .step-title-interactive {
+      @apply font-semibold text-gray-800 text-lg mb-1;
+    }
+    .step-description-interactive {
+      @apply text-sm text-gray-600;
+    }
+    .step-connector-interactive {
+      @apply hidden lg:block absolute top-1/2 left-full w-1/2 h-1 bg-red-200 dark:bg-red-700 -translate-y-1/2;
+    }
+    .step-item-interactive:last-child .step-connector-interactive {
+      @apply hidden;
+    }
+    .faq-question.active+.faq-answer {
+      @apply max-h-screen;
+    }
+    .faq-question.active .material-icons {
+      @apply rotate-180;
+    }
+    .horizontal-scrollbar::-webkit-scrollbar {
+      height: 8px;
+    }
+    .horizontal-scrollbar::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      @apply dark:bg-gray-700;
+      border-radius: 10px;
+    }
+    .horizontal-scrollbar::-webkit-scrollbar-thumb {
+      background: #ef4444;
+      border-radius: 10px;
+    }
+    .horizontal-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #dc2626;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    textarea,
+    select {
+      @apply w-full px-4 py-2 border border-gray-300 dark:border-gray-600  rounded-md focus:ring-red-500 focus:border-red-500 transition-colors;
+    }
+    label {
+      @apply block text-sm font-medium text-gray-700 mb-1;
+    }
+    .modal {
+      @apply fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50 p-4 transition-opacity duration-300 ease-in-out;
+    }
+    .modal-content {
+      @apply bg-white p-8 rounded-lg shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto;
+    }
+    .modal.hidden {
+      @apply opacity-0 pointer-events-none;
+    }
+    .chatbot-modal-content {
+      @apply bg-gradient-to-br from-red-500 to-amber-500 p-0 rounded-xl shadow-2xl w-full max-w-sm transform transition-all duration-300 ease-in-out;
+    }
+    .chatbot-header {
+      @apply flex justify-between items-center p-4 border-b border-white border-opacity-20;
+    }
+    .chatbot-header-title {
+      @apply text-lg font-semibold text-white flex items-center;
+    }
+    .chatbot-header-icon {
+      @apply material-icons mr-2 text-2xl;
+    }
+    .chatbot-close-button {
+      @apply text-white opacity-70 hover:opacity-100 transition-opacity;
+    }
+    .chatbot-messages-container {
+      @apply h-80 bg-white bg-opacity-90 dark:bg-opacity-90 p-4 overflow-y-auto space-y-3;
+    }
+    .chatbot-message {
+      @apply p-3 rounded-lg max-w-[80%] clear-both;
+    }
+    .user-message {
+      @apply bg-red-500 text-white rounded-bl-none float-right;
+    }
+    .bot-message {
+      @apply bg-gray-200 text-gray-800 rounded-br-none float-left;
+    }
+    .chatbot-input-area {
+      @apply p-4 flex items-center bg-white bg-opacity-95 border-t border-gray-200 ;
+    }
+    .chatbot-input {
+      @apply flex-grow mr-3 px-4 py-2 border border-gray-300 dark:border-gray-600  rounded-full focus:ring-red-500 focus:border-red-500 transition-colors text-sm;
+    }
+    .chatbot-send-button {
+      @apply bg-red-500 text-white p-2.5 rounded-full hover:bg-red-600 transition-colors flex items-center justify-center;
+    }
+  </style>
+</head>
+
+<body class="text-gray-700">
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <img alt="EstateFlow logo" class="h-10 mr-2"
+                    src="./EstateFlowLogo.png" />
+                <span class="text-2xl font-bold text-gray-800">EstateFlow</span>
+            </div>
+            <nav class="hidden md:flex space-x-6 items-center">
+                <a class="nav-link active-nav-link" href="#">Home</a>
+                <a class="nav-link" href="#services">Services</a>
+                <a class="nav-link" href="#about">About Us</a>
+                <a class="nav-link" href="#reviews">Reviews</a>
+                <a class="nav-link" href="#faq">FAQ</a>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <button class="btn-primary hidden md:block" id="open-hero-modal-desktop">Get Started</button>
+                <button class="text-gray-600 focus:outline-none" id="theme-toggle">
+                </button>
+                <button class="md:hidden text-gray-600 focus:outline-none" id="mobile-menu-button">
+                    <span class="material-icons">menu</span>
+                </button>
+            </div>
+        </div>
+        <div class="md:hidden hidden" id="mobile-menu">
+            <nav class="flex flex-col space-y-2 px-6 py-4 bg-white shadow-lg">
+                <a class="nav-link active-nav-link py-2" href="#">Home</a>
+                <a class="nav-link py-2" href="#services">Services</a>
+                <a class="nav-link py-2" href="#about">About Us</a>
+                <a class="nav-link py-2" href="#reviews">Reviews</a>
+                <a class="nav-link py-2" href="#faq">FAQ</a>
+                <button class="btn-primary mt-2 w-full" id="open-hero-modal-mobile">Get Started</button>
+            </nav>
+        </div>
+    </header>
+    <section class="hero-section text-white py-20 md:py-32">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6">Unlock Your Home's True Potential</h1>
+            <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto">Discover the accurate value of your property with our
+                expert insights and seamless valuation process.</p>
+            <button class="btn-primary text-lg w-full max-w-lg mx-auto service-card" id="open-hero-form-modal" type="button">Get Your
+                Free Home Valuation</button>
+        </div>
+    </section>
+    <section class="py-16">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="section-title">Choose Your Valuation Type</h2>
+            <p class="section-subtitle max-w-2xl mx-auto">Whether you prefer a quick estimate or a detailed expert
+                assessment, we have the right option for you.</p>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="card text-center service-card">
+                    <div >
+                        <div class="flex items-center justify-center mb-4">
+                            <span class="material-icons text-red-500 text-3xl mr-3">online_prediction</span>
+                            <h3 class="text-xl font-semibold text-gray-800">Online Valuation</h3>
+                        </div>
+                        <p class="text-gray-600 mb-6">Get a fast and free automated valuation based
+                            on market data and property trends. Ideal for a quick estimate.</p>
+                    </div>
+                    <div class="mt-auto"> <button class="btn-secondary w-full sm:w-auto"
+                            id="open-online-valuation-modal" type="button">Request Online Valuation <span
+                                class="material-icons text-sm ml-1 align-middle">arrow_forward</span></button> </div>
+                </div>
+                <div class="card text-center service-card">
+                    <div>
+                        <div class="flex items-center justify-center mb-4">
+                            <span class="material-icons text-red-500 text-3xl mr-3">groups</span>
+                            <h3 class="text-xl font-semibold text-gray-800">In-Person Consultation</h3>
+                        </div>
+                        <p class="text-gray-600 mb-6">Schedule a visit with our local expert for a
+                            comprehensive property assessment and personalized advice.</p>
+                    </div>
+                    <div class="mt-auto"> <button class="btn-secondary w-full sm:w-auto"
+                            id="open-inperson-consultation-modal" type="button">Book In-Person Consultation <span
+                                class="material-icons text-sm ml-1 align-middle">arrow_forward</span></button> </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="py-16 bg-gray-50" id="about">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="section-title">About EstateFlow</h2>
+            <p class="section-subtitle max-w-3xl mx-auto">At EstateFlow, we blend expertise with a personal touch to
+                ensure your property journey is smooth and successful. Our team is dedicated to providing you with the
+                best service.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <img alt="Jane Doe, Head of Sales" class="w-24 h-24 rounded-full mx-auto mb-4 shadow-md"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3l0lY--B5U5nou7j4NKiXCYfZjUgtHuh37xm0OYDR8gRmNjiaX9ZOHRUJm_13s2_qBT9SZRIVYJOTiN54ShbpWshnKYIsYe0CayNHVfqb_7ZUaG3G2o5-INJn4tHUNplTYqFXqc0dPG-Rz_gB6WB3ApWX59Jj_OAlOsJJxHKPl3SC2TarlfkH7bEeGzSdh5ICGNRa9CmY_Eo5MV04XubGx-vuQHxtGWECJ3tPThdq9UwAVn05qaaR_b3hV4jfkoF-nc0CwvmkzrS0" />
+                    <h4 class="font-semibold text-gray-800">Jane Doe</h4>
+                    <p class="text-sm text-gray-600">Head of Sales</p>
+                </div>
+                <div class="text-center">
+                    <img alt="Mark Smith, Lead Property Advisor" class="w-24 h-24 rounded-full mx-auto mb-4 shadow-md"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4S1iSEjJS_5aGNzqyVyRuz_q_bof5warVZRKXeRWYrvmgk0d-fb4tOxgiTtZLD4KKowdTjtfr8sGg9gq9ZJtr5ryOVQMBubF5ugWTyVrY6sujBzzb6sztZkjhjox99k3nqGqAsTMtZMKhMgKec0yejjUBD5loNJzNnG6zmlWMM_cD3gYSBMs4PTmRX8EQd7YVduYWn9dzc1OOIbU5BqDvozOxHFEZDQmElfCQYOLX9TaYAhWxXrbIq_ONDfCckbzcey_Pxi4VfDAb" />
+                    <h4 class="font-semibold text-gray-800">Mark Smith</h4>
+                    <p class="text-sm text-gray-600">Lead Property Advisor</p>
+                </div>
+                <div class="text-center">
+                    <img alt="Emily Chen, Marketing Director" class="w-24 h-24 rounded-full mx-auto mb-4 shadow-md"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhdNRFRsSMMzF4rvwd7NhBA2kHKigiMLpWPNwDFzjt1G1TSFDJLf2fGwYylfTTPIePU571t7lml-ruIJLoG9GvMeU87XspN968g8Y9TdzNMhpTv7CT-D2MYdxgQXlQa_I3xXsXVmXYhtAjp3Nme9v4tCeuJV9GlYeDQmuCirbHIh2M5MZcEJbSOHmuMWwPbG02aSlJdW8IIYz1-5ZcpkrFOlWtfGig8xYH2x6-qfLFRbLA8SHQ_WhXJI1sLkT4lgNEEsF1HV8WUVsu" />
+                    <h4 class="font-semibold text-gray-800">Emily Chen</h4>
+                    <p class="text-sm text-gray-600">Marketing Director</p>
+                </div>
+                <div class="text-center">
+                    <img alt="David Lee, Legal Counsel" class="w-24 h-24 rounded-full mx-auto mb-4 shadow-md"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1MM7z-4K0t2xJw1jukcuB8RGA_N3a9feIjkBK8DSjZlaF4wjb2qiAITYHJp_QezAcOjoptuJfqzEV6WSWpZ4fxRzCcrNpJTFv36XgGjOr44KmiOajeuBdo949QL1rUgglP5wum6kEdS-8gEpqN7nZUG1LjW6b9ENT03sjGir6z5RzUJZOKNhteF4J6fC8g0m275jZV24BPTb97mZB9SiMyxx31NsEObbAHymkKQkYOBGpLxmFFRCXdBkokZDmw_SbiuNuACM5ZOBf" />
+                    <h4 class="font-semibold text-gray-800">David Lee</h4>
+                    <p class="text-sm text-gray-600">Legal Counsel</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="py-16" id="services">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="section-title">Our Comprehensive Services</h2>
+            <p class="section-subtitle max-w-2xl mx-auto">Beyond valuation, we offer a range of services designed to
+                maximize your property's potential and ensure a smooth sale.</p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="card service-card text-left">
+                    <div class="flex-grow">
+                        <div class="flex items-center mb-3">
+                            <span class="material-icons text-red-500 text-2xl mr-2">paid</span>
+                            <h4 class="text-lg font-semibold text-gray-800">Free Valuation</h4>
+                        </div>
+                        <p class="text-sm text-gray-600">Get an accurate, no-obligation estimate of
+                            your property's current market value.</p>
+                    </div>
+                    <div class="tooltip">Detailed market analysis and property value estimation.</div>
+                </div>
+                <div class="card service-card text-left">
+                    <div class="flex-grow">
+                        <div class="flex items-center mb-3">
+                            <span class="material-icons text-red-500 text-2xl mr-2">assignment_turned_in</span>
+                            <h4 class="text-lg font-semibold text-gray-800">Document Check</h4>
+                        </div>
+                        <p class="text-sm text-gray-600">Expert review of all legal papers to ensure
+                            a smooth, hassle-free transaction.</p>
+                    </div>
+                    <div class="tooltip">Comprehensive review of legal documents for transaction security.</div>
+                </div>
+                <div class="card service-card text-left">
+                    <div class="flex-grow">
+                        <div class="flex items-center mb-3">
+                            <span class="material-icons text-red-500 text-2xl mr-2">holiday_village</span>
+                            <h4 class="text-lg font-semibold text-gray-800">Home Staging</h4>
+                        </div>
+                        <p class="text-sm text-gray-600">Professional staging advice to showcase your
+                            property's best features and attract buyers.</p>
+                    </div>
+                    <div class="tooltip">Staging services to maximize buyer appeal and property value.</div>
+                </div>
+                <div class="card service-card text-left mt-8 md:mt-0">
+                    <div class="flex-grow">
+                        <div class="flex items-center mb-3">
+                            <span class="material-icons text-red-500 text-2xl mr-2">photo_camera</span>
+                            <h4 class="text-lg font-semibold text-gray-800">Professional Photoshoot</h4>
+                        </div>
+                        <p class="text-sm text-gray-600">High-quality photography to highlight your
+                            property's best features.</p>
+                    </div>
+                    <div class="tooltip">Capture your property's best angles with professional photography.</div>
+                </div>
+                <div class="card service-card text-left mt-8 md:mt-0">
+                    <div class="flex-grow">
+                        <div class="flex items-center mb-3">
+                            <span class="material-icons text-red-500 text-2xl mr-2">real_estate_agent</span>
+                            <h4 class="text-lg font-semibold text-gray-800">Finance Advice</h4>
+                        </div>
+                        <p class="text-sm text-gray-600">Guidance on financing options and maximizing
+                            your investment returns.</p>
+                    </div>
+                    <div class="tooltip">Expert advice on property financing and investment strategies.</div>
+                </div>
+                <div class="card service-card text-left mt-8 md:mt-0">
+                    <div class="flex-grow">
+                        <div class="flex items-center mb-3">
+                            <span class="material-icons text-red-500 text-2xl mr-2">campaign</span>
+                            <h4 class="text-lg font-semibold text-gray-800">Marketing Strategy</h4>
+                        </div>
+                        <p class="text-sm text-gray-600">Tailored marketing plans to reach the right
+                            buyers for your property.</p>
+                    </div>
+                    <div class="tooltip">Customized marketing plans to effectively reach target buyers.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="py-16 bg-gray-50" id="reviews">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="section-title">What Our Clients Say</h2>
+            <p class="section-subtitle max-w-2xl mx-auto">Hear from satisfied homeowners who trusted EstateFlow with
+                their property journey.</p>
+            <div class="relative">
+                <button
+                    class="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 sm:-translate-x-8 md:-translate-x-12 bg-white p-2 rounded-full shadow-md text-gray-600 hover:text-red-500 dark:hover:text-red-400 focus:outline-none z-10 transition-colors"
+                    id="prev-testimonial">
+                    <span class="material-icons">chevron_left</span>
+                </button>
+                <div class="overflow-hidden">
+                    <div class="flex transition-transform duration-500 ease-in-out" id="testimonial-slider">
+                        <div class="testimonial-card card p-6 text-left mx-2 sm:mx-4 md:mx-8">
+                            <p class="text-gray-700 italic mb-4">"EstateFlow made selling my home
+                                effortless. Their online valuation was spot on, and the team provided excellent support
+                                throughout. Highly recommend!"</p>
+                            <div class="flex items-center">
+                                <img alt="Sarah R." class="w-12 h-12 rounded-full mr-3 shadow-sm"
+                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuADwTQIy6j9X99NbKbKoNTdpwWUWfq6IWKjLe3ZOlJCdy9XQK05ltQ93Fkq_D5gBTKi2pCPIOnUrGAbyjs1NvcqixzhudoS_YVjhXOpj-gD-fyzyl-aXDG2WrsBCzEBstl0ypsYOfJBs7F3aYtZJ08d15BFUCy4qsFPHXSM8GLTiTjJDYdYTom0TyrfnvEm_AxHfW2hKUkn35p4YsBOuMw5pcKiczwRkTRAAGljZwERvmi8uZIF8PB1AGFG3F9NbnUkNXFSazNjpXRL" />
+                                <div>
+                                    <p class="font-semibold text-gray-800">Sarah R.</p>
+                                    <p class="text-sm text-gray-500">Home Seller</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial-card card p-6 text-left mx-2 sm:mx-4 md:mx-8">
+                            <p class="text-gray-700 italic mb-4">"The in-person consultation provided
+                                by EstateFlow was incredibly thorough. The agent was knowledgeable and gave me great
+                                advice. Sold my property for a quick sale."</p>
+                            <div class="flex items-center">
+                                <img alt="John &amp; Lisa D." class="w-12 h-12 rounded-full mr-3 shadow-sm"
+                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkdmLc7xsgg01E60A0q2NJ9mdnrVDqFlJzV4P0Q_Gdj3CrXoYiTM-Zk13KPw8CSxvVdd75fF8U1lKjAV-q6Wu6LkQt237_kXBSNzNhf3OwkxLfH2oTJUI-WOXU4vSR6v1WZ6RSw8Tz8s45knggRURh9XLt09vRBx8BXQlrWdUsW065YHaGuc9qo6jaxmdMCdQe4yu7yzRjBlTTviBfj4TH7i0ekQKWsx6r1Dcabw0e7Wch0vVo52KU3MPaVOkjofVmStGehMCd-eA4" />
+                                <div>
+                                    <p class="font-semibold text-gray-800">John &amp; Lisa D.</p>
+                                    <p class="text-sm text-gray-500">Property Investors</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial-card card p-6 text-left mx-2 sm:mx-4 md:mx-8">
+                            <p class="text-gray-700 italic mb-4">"Working with EstateFlow was a
+                                fantastic experience. Their team is professional, responsive, and truly cares about
+                                their clients. I couldn't be happier!"</p>
+                            <div class="flex items-center">
+                                <img alt="Michael B." class="w-12 h-12 rounded-full mr-3 shadow-sm"
+                                    src="https://lh3.googleusercontent.com/a-/ALV-UjXcW0XQW_pZ7JzW_F9S_8K_K7D3l8P_Z8H3Z9L7K8QzYjQ=s96-c" />
+                                <div>
+                                    <p class="font-semibold text-gray-800">Michael B.</p>
+                                    <p class="text-sm text-gray-500">First-time Buyer</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial-card card p-6 text-left mx-2 sm:mx-4 md:mx-8">
+                            <p class="text-gray-700 italic mb-4">"EstateFlow's professionalism and
+                                market knowledge were key to selling our property above asking price. We are grateful
+                                for their dedication."</p>
+                            <div class="flex items-center">
+                                <img alt="Linda &amp; Kevin P." class="w-12 h-12 rounded-full mr-3 shadow-sm"
+                                    src="https://lh3.googleusercontent.com/a/ACg8ocJ8v7R2X8oE9z7P9_G7sD6fT4K3Y1qU0S3jX9vA5gWw=s96-c" />
+                                <div>
+                                    <p class="font-semibold text-gray-800">Linda &amp; Kevin P.</p>
+                                    <p class="text-sm text-gray-500">Satisfied Sellers</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button
+                    class="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 sm:translate-x-8 md:translate-x-12 bg-white p-2 rounded-full shadow-md text-gray-600 hover:text-red-500 dark:hover:text-red-400 focus:outline-none z-10 transition-colors"
+                    id="next-testimonial">
+                    <span class="material-icons">chevron_right</span>
+                </button>
+            </div>
+        </div>
+    </section>
+    <section class="py-16">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="section-title">Your Sales Journey with EstateFlow</h2>
+            <p class="section-subtitle max-w-2xl mx-auto">We guide you through every step of the sales process, ensuring
+                clarity and confidence from start to finish.</p>
+            <div class="flex flex-wrap -m-4" id="estateflow-steps-container">
+                <div class="step-item-interactive" data-step="1">
+                    <div class="step-content-interactive">
+                        <div class="step-icon-interactive"><span class="material-icons">request_quote</span></div>
+                        <h3 class="step-title-interactive">Valuation</h3>
+                        <p class="step-description-interactive">Accurate market appraisal of your property.</p>
+                        <div class="tooltip">Detailed market appraisal and pricing strategy.</div>
+                    </div>
+                    <div class="step-connector-interactive"></div>
+                </div>
+                <div class="step-item-interactive" data-step="2">
+                    <div class="step-content-interactive">
+                        <div class="step-icon-interactive"><span class="material-icons">analytics</span></div>
+                        <h3 class="step-title-interactive">Needs Analysis</h3>
+                        <p class="step-description-interactive">Understanding your specific goals and timeline.</p>
+                        <div class="tooltip">Personalized consultation to align with your objectives.</div>
+                    </div>
+                    <div class="step-connector-interactive"></div>
+                </div>
+                <div class="step-item-interactive" data-step="3">
+                    <div class="step-content-interactive">
+                        <div class="step-icon-interactive"><span class="material-icons">camera_alt</span></div>
+                        <h3 class="step-title-interactive">Photos &amp; Staging</h3>
+                        <p class="step-description-interactive">Showcasing your property's best features.</p>
+                        <div class="tooltip">Professional photography and staging to maximize appeal.</div>
+                    </div>
+                    <div class="step-connector-interactive"></div>
+                </div>
+                <div class="step-item-interactive" data-step="4">
+                    <div class="step-content-interactive">
+                        <div class="step-icon-interactive"><span class="material-icons">visibility</span></div>
+                        <h3 class="step-title-interactive">Visits &amp; Viewings</h3>
+                        <p class="step-description-interactive">Connecting with potential buyers effectively.</p>
+                        <div class="tooltip">Managed viewings and buyer engagement.</div>
+                    </div>
+                    <div class="step-connector-interactive"></div>
+                </div>
+                <div class="step-item-interactive" data-step="5">
+                    <div class="step-content-interactive">
+                        <div class="step-icon-interactive"><span class="material-icons">gavel</span></div>
+                        <h3 class="step-title-interactive">Negotiation</h3>
+                        <p class="step-description-interactive">Securing the best possible deal for you.</p>
+                        <div class="tooltip">Expert negotiation to achieve optimal sale terms.</div>
+                    </div>
+                    <div class="step-connector-interactive"></div>
+                </div>
+                <div class="step-item-interactive" data-step="6">
+                    <div class="step-content-interactive">
+                        <div class="step-icon-interactive"><span class="material-icons">celebration</span></div>
+                        <h3 class="step-title-interactive">Successful Sale</h3>
+                        <p class="step-description-interactive">Smooth completion and handover process.</p>
+                        <div class="tooltip">Seamless transaction closing and post-sale support.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-12 p-6 bg-white rounded-lg shadow-xl max-w-3xl mx-auto text-left hidden"
+                id="step-details-container">
+                <h3 class="text-2xl font-semibold text-gray-800 mb-3" id="step-details-title"></h3>
+                <p class="text-gray-600" id="step-details-description"></p>
+            </div>
+        </div>
+    </section>
+    <section class="py-16 bg-gray-50" id="faq">
+        <div class="container mx-auto px-6">
+            <h2 class="section-title text-center">Frequently Asked Questions</h2>
+            <p class="section-subtitle text-center max-w-2xl mx-auto">Find quick answers to common questions about our
+                valuation services and processes.</p>
+            <div class="max-w-3xl mx-auto space-y-4">
+                <div class="faq-item bg-white rounded-lg shadow-md overflow-hidden">
+                    <button
+                        class="faq-question w-full flex justify-between items-center text-left p-5 text-lg font-medium text-gray-800 hover:bg-gray-200  focus:outline-none transition-colors">
+                        <span>How accurate is the online valuation?</span>
+                        <span
+                            class="material-icons text-red-500 transform transition-transform duration-300">expand_more</span>
+                    </button>
+                    <div class="faq-answer max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                        <p class="p-5 text-gray-600">Our online valuation provides a good initial
+                            estimate based on current market data and trends. For a more precise valuation, we recommend
+                            an in-person consultation with one of our local experts.</p>
+                    </div>
+                </div>
+                <div class="faq-item bg-white rounded-lg shadow-md overflow-hidden">
+                    <button
+                        class="faq-question w-full flex justify-between items-center text-left p-5 text-lg font-medium text-gray-800 hover:bg-gray-200  focus:outline-none transition-colors">
+                        <span>What is included in an in-person consultation?</span>
+                        <span
+                            class="material-icons text-red-500 transform transition-transform duration-300">expand_more</span>
+                    </button>
+                    <div class="faq-answer max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                        <p class="p-5 text-gray-600">An in-person consultation includes a thorough
+                            inspection of your property by an experienced agent, a detailed market analysis considering
+                            local factors, and personalized advice on pricing strategy, potential improvements, and the
+                            selling process.</p>
+                    </div>
+                </div>
+                <div class="faq-item bg-white rounded-lg shadow-md overflow-hidden">
+                    <button
+                        class="faq-question w-full flex justify-between items-center text-left p-5 text-lg font-medium text-gray-800 hover:bg-gray-200  focus:outline-none transition-colors">
+                        <span>Is my personal information kept confidential?</span>
+                        <span
+                            class="material-icons text-red-500 transform transition-transform duration-300">expand_more</span>
+                    </button>
+                    <div class="faq-answer max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                        <p class="p-5 text-gray-600">Yes, we take data privacy very seriously. Your
+                            personal information is kept secure and confidential in accordance with all applicable data
+                            protection regulations. We will never share your information without your consent.</p>
+                    </div>
+                </div>
+                <div class="faq-item bg-white rounded-lg shadow-md overflow-hidden">
+                    <button
+                        class="faq-question w-full flex justify-between items-center text-left p-5 text-lg font-medium text-gray-800 hover:bg-gray-200  focus:outline-none transition-colors">
+                        <span>How long does the valuation process take?</span>
+                        <span
+                            class="material-icons text-red-500 transform transition-transform duration-300">expand_more</span>
+                    </button>
+                    <div class="faq-answer max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                        <p class="p-5 text-gray-600">Online valuations are typically instant,
+                            providing you with an immediate estimate. In-person consultations usually take about 1-2
+                            hours for the property visit, and you'll receive a comprehensive valuation report shortly
+                            thereafter, typically within 24-48 hours.</p>
+                    </div>
+                </div>
+                <div class="faq-item bg-white rounded-lg shadow-md overflow-hidden">
+                    <button
+                        class="faq-question w-full flex justify-between items-center text-left p-5 text-lg font-medium text-gray-800 hover:bg-gray-200  focus:outline-none transition-colors">
+                        <span>Are there any hidden fees for the valuation?</span>
+                        <span
+                            class="material-icons text-red-500 transform transition-transform duration-300">expand_more</span>
+                    </button>
+                    <div class="faq-answer max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                        <p class="p-5 text-gray-600">No, our initial online and in-person valuations
+                            are completely free and come with no obligation. We believe in transparent pricing. Any fees
+                            for subsequent services, should you choose to proceed with us, will be clearly communicated
+                            and agreed upon upfront.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="bg-gray-800 text-gray-300 py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 text-center md:text-left">
+                <div>
+                    <h5 class="text-lg font-semibold text-white mb-3">EstateFlow</h5>
+                    <p class="text-sm">Your trusted partner in property valuation and sales. We are committed to
+                        providing exceptional service and expert advice.</p>
+                </div>
+                <div>
+                    <h5 class="text-lg font-semibold text-white mb-3">Quick Links</h5>
+                    <ul class="space-y-2 text-sm">
+                        <li><a class="hover:text-red-400 transition-colors" href="#">Home</a></li>
+                        <li><a class="hover:text-red-400 transition-colors" href="#services">Our Services</a></li>
+                        <li><a class="hover:text-red-400 transition-colors" href="#about">About Us</a></li>
+                        <li><a class="hover:text-red-400 transition-colors" href="#faq">FAQ</a></li>
+                        <li><a class="hover:text-red-400 transition-colors" href="#"
+                                id="open-contact-modal-footer">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-lg font-semibold text-white mb-3">Legal</h5>
+                    <ul class="space-y-2 text-sm">
+                        <li><a class="hover:text-red-400 transition-colors" href="#">Privacy Policy</a></li>
+                        <li><a class="hover:text-red-400 transition-colors" href="#">Terms of Service</a></li>
+                        <li><a class="hover:text-red-400 transition-colors" href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 pt-8 text-center text-sm">
+                <p>© 2025 EstateFlow. All rights reserved.</p>
+                <div class="mt-4 flex justify-center space-x-4">
+                    <a aria-label="Facebook" class="text-gray-400 hover:text-white transition-colors" href="#"><span
+                            class="material-icons">facebook</span></a>
+                    <a aria-label="Twitter" class="text-gray-400 hover:text-white transition-colors" href="#"><svg
+                            aria-hidden="true" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84">
+                            </path>
+                        </svg></a>
+                    <a aria-label="Instagram" class="text-gray-400 hover:text-white transition-colors" href="#"><svg
+                            aria-hidden="true" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path clip-rule="evenodd"
+                                d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.28.058 1.688.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
+                                fill-rule="evenodd"></path>
+                        </svg></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <div class="modal hidden" id="hero-form-modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-semibold text-gray-800">Get Your Free Home Valuation</h3>
+                <button class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-100"
+                    id="close-hero-form-modal">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <form id="hero-modal-form">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="hero-modal-name">Full Name</label>
+                        <input id="hero-modal-name" name="name" placeholder="Your Full Name" required="" type="text" />
+                    </div>
+                    <div>
+                        <label for="hero-modal-email">Email Address</label>
+                        <input id="hero-modal-email" name="email" placeholder="Your Email Address" required=""
+                            type="email" />
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label for="hero-modal-phone">Phone Number (Optional)</label>
+                    <input id="hero-modal-phone" name="phone" placeholder="Your Phone Number" type="tel" />
+                </div>
+                <div class="mb-4">
+                    <label for="hero-modal-address">Property Address</label>
+                    <input id="hero-modal-address" name="address" placeholder="Enter Property Address" required=""
+                        type="text" />
+                </div>
+                <div class="mb-4">
+                    <label for="hero-modal-property-type">Property Type</label>
+                    <select id="hero-modal-property-type" name="property_type" required="">
+                        <option disabled="" selected="" value="">Select Property Type</option>
+                        <option value="house">House</option>
+                        <option value="apartment">Apartment</option>
+                        <option value="condo">Condo</option>
+                        <option value="townhouse">Townhouse</option>
+                        <option value="land">Land</option>
+                    </select>
+                </div>
+                <div class="mb-6">
+                    <label for="hero-modal-message">Additional Information (Optional)</label>
+                    <textarea id="hero-modal-message" name="message"
+                        placeholder="Any specific details about your property or valuation needs?" rows="3"></textarea>
+                </div>
+                <button class="btn-primary text-lg w-full" type="submit">Request Valuation</button>
+            </form>
+        </div>
+    </div>
+    <div class="modal hidden" id="online-valuation-modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-semibold text-gray-800">Online Valuation Request</h3>
+                <button class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-100"
+                    id="close-online-valuation-modal">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <form id="online-valuation-modal-form">
+                <div class="mb-4">
+                    <label for="online-modal-name">Full Name</label>
+                    <input id="online-modal-name" name="name" placeholder="Your Full Name" required="" type="text" />
+                </div>
+                <div class="mb-4">
+                    <label for="online-modal-email">Email Address</label>
+                    <input id="online-modal-email" name="email" placeholder="Your Email Address" required=""
+                        type="email" />
+                </div>
+                <div class="mb-4">
+                    <label for="online-modal-address">Property Address</label>
+                    <input id="online-modal-address" name="address" placeholder="Enter Property Address" required=""
+                        type="text" />
+                </div>
+                <div class="mb-4">
+                    <label for="online-modal-property-type">Property Type</label>
+                    <select id="online-modal-property-type" name="property_type" required="">
+                        <option disabled="" selected="" value="">Select Property Type</option>
+                        <option value="house">House</option>
+                        <option value="apartment">Apartment</option>
+                        <option value="condo">Condo</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label for="online-modal-bedrooms">Number of Bedrooms</label>
+                    <input id="online-modal-bedrooms" min="0" name="bedrooms" placeholder="e.g., 3" type="number" />
+                </div>
+                <div class="mb-4">
+                    <label for="online-modal-bathrooms">Number of Bathrooms</label>
+                    <input id="online-modal-bathrooms" min="0" name="bathrooms" placeholder="e.g., 2" type="number" />
+                </div>
+                <div class="mb-6">
+                    <label for="online-modal-notes">Notes (Optional)</label>
+                    <textarea id="online-modal-notes" name="notes"
+                        placeholder="Any specific features or recent renovations?" rows="3"></textarea>
+                </div>
+                <button class="btn-secondary w-full" type="submit">Submit Request</button>
+            </form>
+        </div>
+    </div>
+    <div class="modal hidden" id="inperson-consultation-modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-semibold text-gray-800">Book In-Person Consultation</h3>
+                <button class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-100"
+                    id="close-inperson-consultation-modal">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <form id="inperson-consultation-modal-form">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="inperson-modal-name">Full Name</label>
+                        <input id="inperson-modal-name" name="name" placeholder="Your Full Name" required=""
+                            type="text" />
+                    </div>
+                    <div>
+                        <label for="inperson-modal-phone">Phone Number</label>
+                        <input id="inperson-modal-phone" name="phone" placeholder="Your Phone Number" required=""
+                            type="tel" />
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label for="inperson-modal-email">Email Address</label>
+                    <input id="inperson-modal-email" name="email" placeholder="Your Email Address" required=""
+                        type="email" />
+                </div>
+                <div class="mb-4">
+                    <label for="inperson-modal-address">Property Address</label>
+                    <input id="inperson-modal-address" name="address" placeholder="Property Address for Consultation"
+                        required="" type="text" />
+                </div>
+                <div class="mb-4">
+                    <label for="inperson-modal-availability">Preferred Dates/Times</label>
+                    <textarea id="inperson-modal-availability" name="availability"
+                        placeholder="e.g., Weekdays after 5 PM, Saturday mornings" required="" rows="2"></textarea>
+                </div>
+                <div class="mb-6">
+                    <label for="inperson-modal-message">Additional Information (Optional)</label>
+                    <textarea id="inperson-modal-message" name="message"
+                        placeholder="Specific questions or property details?" rows="3"></textarea>
+                </div>
+                <button class="btn-secondary w-full" type="submit">Request Consultation</button>
+            </form>
+        </div>
+    </div>
+    <div class="modal hidden" id="contact-modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-semibold text-gray-800">Contact Us / Get Started</h3>
+                <button class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-100"
+                    id="close-contact-modal">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <form id="contact-modal-form">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="contact-modal-name">Full Name</label>
+                        <input id="contact-modal-name" name="name" placeholder="Your Full Name" required=""
+                            type="text" />
+                    </div>
+                    <div>
+                        <label for="contact-modal-email">Email Address</label>
+                        <input id="contact-modal-email" name="email" placeholder="Your Email Address" required=""
+                            type="email" />
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label for="contact-modal-phone">Phone Number (Optional)</label>
+                    <input id="contact-modal-phone" name="phone" placeholder="Your Phone Number" type="tel" />
+                </div>
+                <div class="mb-4">
+                    <label for="contact-modal-subject">Subject</label>
+                    <input id="contact-modal-subject" name="subject" placeholder="Reason for contact" required=""
+                        type="text" />
+                </div>
+                <div class="mb-6">
+                    <label for="contact-modal-message">Your Message</label>
+                    <textarea id="contact-modal-message" name="message" placeholder="How can we help you today?"
+                        required="" rows="4"></textarea>
+                </div>
+                <button class="btn-primary w-full" type="submit">Send Message</button>
+            </form>
+        </div>
+    </div>
+    <div class="modal hidden" id="chatbot-modal">
+        <div class="chatbot-modal-content">
+            <div class="chatbot-header">
+                <h3 class="chatbot-header-title">
+                    <span class="chatbot-header-icon">🤖</span> EstateFlow Assistant
+                </h3>
+                <button class="chatbot-close-button" id="close-chatbot-modal">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <div class="chatbot-messages-container" id="chatbot-messages">
+                <div class="bot-message chatbot-message">
+                    <p>Hello! How can I help you today with your property needs?</p>
+                </div>
+            </div>
+            <div class="chatbot-input-area">
+                <input class="chatbot-input" id="chatbot-input" placeholder="Ask me anything..." type="text" />
+                <button class="chatbot-send-button" id="chatbot-send">
+                    <span class="material-icons text-lg">send</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <button
+        class="fixed bottom-6 right-6 bg-red-500 text-white p-4 rounded-full shadow-lg hover:bg-red-600 transition-colors duration-300 focus:outline-none z-40"
+        id="open-chatbot-modal">
+        <span class="material-icons text-3xl">chat</span>
+    </button>
+    <script>
+        // Mobile menu toggle
+        const menuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        // Theme toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+        const bodyElement = document.body;
+        // Function to apply theme
+
+        function replaceClassesRecursively(element, replacements) {
+    replacements.forEach(([from, to]) => {
+        if (element.classList.contains(from)) {
+            element.classList.replace(from, to);
+        }
+    });
+    Array.from(element.children).forEach(child => replaceClassesRecursively(child, replacements));
+}
+
+function applyTheme(theme) {
+    const replacementsDark = [
+        ['bg-pink-100','bg-gray-900'],
+        ['bg-gray-50','bg-gray-700'],
+        ['bg-gray-200','bg-gray-600'],
+        ['bg-gray-800','bg-gray-500'],
+        ['bg-white','bg-gray-800'],
+        ['text-gray-800','text-gray-100'],
+        ['text-gray-700','text-gray-200'],
+        ['text-gray-600','text-gray-300'],
+        ['border-gray-200','border-gray-700'],
+        ['hover:bg-gray-200','hover:bg-gray-600']
+    ];
+    const replacementsLight = [
+        ['bg-gray-900','bg-pink-100'],
+        ['bg-gray-800','bg-white'],
+        ['bg-gray-700','bg-gray-50'],
+        ['bg-gray-600','bg-gray-200'],
+        ['bg-gray-500','bg-gray-800'],
+        ['text-gray-100','text-gray-800'],
+        ['text-gray-300','text-gray-700'],
+        ['text-gray-200','text-gray-600'],
+        ['border-gray-700','border-gray-200'],
+        ['hover:bg-gray-600','hover:bg-gray-200']
+    ];
+    if (theme === 'dark') {
+        htmlElement.classList.add('dark');
+        replaceClassesRecursively(document.body, replacementsDark);
+        if (themeToggle.querySelector('.material-icons')) themeToggle.querySelector('.material-icons').textContent = 'light_mode';
+        localStorage.setItem('theme', 'dark');
+    } else {
+        htmlElement.classList.remove('dark');
+        replaceClassesRecursively(document.body, replacementsLight);
+        if (themeToggle.querySelector('.material-icons')) themeToggle.querySelector('.material-icons').textContent = 'dark_mode';
+        localStorage.setItem('theme', 'light');
+    }
+}
+        
+        // Check for saved theme preference or use system preference
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            applyTheme('dark');
+        } else {
+            applyTheme('light');
+        }
+        themeToggle.addEventListener('click', () => {
+            if (htmlElement.classList.contains('dark')) {
+                applyTheme('light');
+            } else {
+                applyTheme('dark');
+            }
+        });
+        // FAQ Accordion
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        faqQuestions.forEach(button => {
+            button.addEventListener('click', () => {
+                const isActive = button.classList.contains('active');
+                faqQuestions.forEach(otherButton => {
+                    if (otherButton.classList.contains('active') && otherButton !== button) {
+                        otherButton.classList.remove('active');
+                        otherButton.nextElementSibling.style.maxHeight = null;
+                        otherButton.querySelector('.material-icons').classList.remove('rotate-180');
+                    }
+                });
+                button.classList.toggle('active');
+                const answer = button.nextElementSibling;
+                if (button.classList.contains('active')) {
+                    answer.style.maxHeight = answer.scrollHeight + "px";
+                    button.querySelector('.material-icons').classList.add('rotate-180');
+                } else {
+                    answer.style.maxHeight = null;
+                    button.querySelector('.material-icons').classList.remove('rotate-180');
+                }
+            });
+        });
+        // Testimonial Carousel
+        const slider = document.getElementById('testimonial-slider');
+        const prevButton = document.getElementById('prev-testimonial');
+        const nextButton = document.getElementById('next-testimonial');
+        const testimonials = Array.from(slider.querySelectorAll('.testimonial-card'));
+        let currentIndex = 0;
+        let visibleCount = window.innerWidth < 768 ? 1 : (window.innerWidth < 1280 ? 2 : 2);
+        let testimonialWidth = 0;
+        function calculateTestimonialWidth() {
+            if (testimonials.length > 0) {
+                const firstTestimonial = testimonials[0];
+                const style = getComputedStyle(firstTestimonial);
+                const marginLeft = parseFloat(style.marginLeft) || 0;
+                const marginRight = parseFloat(style.marginRight) || 0;
+                testimonialWidth = firstTestimonial.offsetWidth + marginLeft + marginRight;
+            }
+        }
+        function updateCarousel() {
+            calculateTestimonialWidth();
+            const maxIndex = Math.max(0, testimonials.length - visibleCount);
+            currentIndex = Math.max(0, Math.min(currentIndex, maxIndex));
+            const offset = -currentIndex * testimonialWidth;
+            slider.style.transform = `translateX(${offset}px)`;
+            prevButton.disabled = currentIndex === 0;
+            nextButton.disabled = currentIndex >= maxIndex;
+            prevButton.classList.toggle('opacity-50', currentIndex === 0);
+            prevButton.classList.toggle('cursor-not-allowed', currentIndex === 0);
+            nextButton.classList.toggle('opacity-50', currentIndex >= maxIndex);
+            nextButton.classList.toggle('cursor-not-allowed', currentIndex >= maxIndex);
+        }
+        function updateVisibleCount() {
+            if (window.innerWidth >= 1280) {
+                visibleCount = 2;
+            } else if (window.innerWidth >= 768) {
+                visibleCount = 2;
+            } else {
+                visibleCount = 1;
+            }
+        }
+        prevButton.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateCarousel();
+            }
+        });
+        nextButton.addEventListener('click', () => {
+            if (currentIndex < testimonials.length - visibleCount) {
+                currentIndex++;
+                updateCarousel();
+            }
+        });
+        updateVisibleCount();
+        calculateTestimonialWidth();
+        updateCarousel();
+        window.addEventListener('resize', () => {
+            updateVisibleCount();
+            calculateTestimonialWidth();
+            updateCarousel();
+        });
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href === '#') {
+                    e.preventDefault();
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                    document.querySelectorAll('header nav a.nav-link, #mobile-menu nav a.nav-link').forEach(link => link.classList.remove('active-nav-link'));
+                    document.querySelector('header nav a.nav-link[href="#"]').classList.add('active-nav-link');
+                    const mobileHomeLink = mobileMenu.querySelector('a.nav-link[href="#"]');
+                    if (mobileHomeLink) mobileHomeLink.classList.add('active-nav-link');
+                    return;
+                }
+                const targetElement = document.querySelector(href);
+                if (targetElement) {
+                    e.preventDefault();
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                    document.querySelectorAll('header nav a.nav-link, #mobile-menu nav a.nav-link').forEach(link => link.classList.remove('active-nav-link'));
+                    this.classList.add('active-nav-link');
+                    const mobileNavLink = mobileMenu.querySelector(`a[href="${href}"]`);
+                    if (mobileNavLink) {
+                        mobileNavLink.classList.add('active-nav-link');
+                    }
+                }
+            });
+        });
+        // Interactive EstateFlow Steps
+        const stepItems = document.querySelectorAll('.step-item-interactive');
+        const stepDetailsContainer = document.getElementById('step-details-container');
+        const stepDetailsTitle = document.getElementById('step-details-title');
+        const stepDetailsDescription = document.getElementById('step-details-description');
+        const stepDetailsData = {
+            1: {
+                title: "Step 1: Valuation",
+                description: "Our experts provide a detailed and accurate valuation of your property based on current market conditions, comparable sales in your area, and unique features of your home. This initial assessment is crucial for setting a competitive and realistic price."
+            },
+            2: {
+                title: "Step 2: Needs Analysis",
+                description: "We take the time to understand your specific needs, timeline, and financial objectives. Whether you're looking for a quick sale, maximizing profit, or specific terms, we tailor our strategy to align with your goals."
+            },
+            3: {
+                title: "Step 3: Photos & Staging",
+                description: "First impressions matter. We arrange professional photography and provide expert staging advice to highlight your property's best features, creating appealing visuals that attract a wide range of potential buyers."
+            },
+            4: {
+                title: "Step 4: Visits & Viewings",
+                description: "We manage all property viewings, ensuring they are conducted professionally and conveniently. Our team is skilled at showcasing your property's value and answering buyer inquiries effectively to generate strong interest."
+            },
+            5: {
+                title: "Step 5: Negotiation",
+                description: "Our experienced negotiators work diligently on your behalf to secure the best possible price and terms for your property sale. We handle offers and counter-offers with skill and transparency, always keeping your best interests at the forefront."
+            },
+            6: {
+                title: "Step 6: Successful Sale",
+                description: "We guide you through the final stages of the sale, including paperwork, legal checks, and coordination with all parties. Our goal is to ensure a smooth completion and a seamless handover process, celebrating your successful property transaction."
+            }
+        };
+        stepItems.forEach(item => {
+            const stepContent = item.querySelector('.step-content-interactive');
+            stepContent.addEventListener('click', () => {
+                const stepNumber = item.dataset.step;
+                stepItems.forEach(i => i.querySelector('.step-content-interactive').classList.remove('active'));
+                stepContent.classList.add('active');
+                stepDetailsTitle.textContent = stepDetailsData[stepNumber].title;
+                stepDetailsDescription.textContent = stepDetailsData[stepNumber].description;
+                stepDetailsContainer.classList.remove('hidden');
+                stepDetailsContainer.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest'
+                });
+            });
+        });
+        // Modal Handling
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
+            }
+        }
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+            }
+        }
+        const modalTriggers = [{
+            buttonId: 'open-hero-form-modal',
+            modalId: 'hero-form-modal',
+            closeButtonId: 'close-hero-form-modal'
+        }, {
+            buttonId: 'open-hero-modal-desktop',
+            modalId: 'contact-modal',
+            closeButtonId: 'close-contact-modal'
+        }, {
+            buttonId: 'open-hero-modal-mobile',
+            modalId: 'contact-modal',
+            closeButtonId: 'close-contact-modal'
+        }, {
+            buttonId: 'open-online-valuation-modal',
+            modalId: 'online-valuation-modal',
+            closeButtonId: 'close-online-valuation-modal'
+        }, {
+            buttonId: 'open-inperson-consultation-modal',
+            modalId: 'inperson-consultation-modal',
+            closeButtonId: 'close-inperson-consultation-modal'
+        }, {
+            buttonId: 'open-contact-modal-footer',
+            modalId: 'contact-modal',
+            closeButtonId: 'close-contact-modal'
+        }, {
+            buttonId: 'open-chatbot-modal',
+            modalId: 'chatbot-modal',
+            closeButtonId: 'close-chatbot-modal'
+        },];
+        modalTriggers.forEach(trigger => {
+            const openBtn = document.getElementById(trigger.buttonId);
+            const closeBtn = document.getElementById(trigger.closeButtonId);
+            const modal = document.getElementById(trigger.modalId);
+            if (openBtn) openBtn.addEventListener('click', () => openModal(trigger.modalId));
+            if (closeBtn) closeBtn.addEventListener('click', () => closeModal(trigger.modalId));
+            if (modal) {
+                modal.addEventListener('click', (event) => {
+                    if (event.target === modal) {
+                        closeModal(trigger.modalId);
+                    }
+                });
+            }
+        });
+        const allForms = document.querySelectorAll('.modal-content form, .chatbot-modal-content form');
+        allForms.forEach(form => {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                alert('Thank you for your submission! We will be in touch shortly.');
+                this.reset();
+                const parentModal = this.closest('.modal');
+                if (parentModal) {
+                    closeModal(parentModal.id);
+                }
+            });
+        });
+        // Chatbot enhanced functionality
+        const chatbotSendButton = document.getElementById('chatbot-send');
+        const chatbotInput = document.getElementById('chatbot-input');
+        const chatbotMessagesContainer = document.getElementById('chatbot-messages');
+        if (chatbotSendButton && chatbotInput && chatbotMessagesContainer) {
+            chatbotSendButton.addEventListener('click', handleChatbotSend);
+            chatbotInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    handleChatbotSend();
+                }
+            });
+        }
+        function handleChatbotSend() {
+            const messageText = chatbotInput.value.trim();
+            if (messageText === '') return;
+            // Display user message
+            const userMessageDiv = document.createElement('div');
+            userMessageDiv.classList.add('user-message', 'chatbot-message', 'text-sm');
+            userMessageDiv.innerHTML = `<p>${messageText}</p>`;
+            chatbotMessagesContainer.appendChild(userMessageDiv);
+            chatbotInput.value = ''; // Clear input
+            chatbotMessagesContainer.scrollTop = chatbotMessagesContainer.scrollHeight; // Scroll to bottom
+            // Simulate bot response
+            setTimeout(() => {
+                const botResponseDiv = document.createElement('div');
+                botResponseDiv.classList.add('bot-message', 'chatbot-message', 'text-sm');
+                let botText = "Thanks for your message! How can I assist you further regarding property valuation or our services?";
+                if (messageText.toLowerCase().includes("valuation") || messageText.toLowerCase().includes("value")) {
+                    botText = "We offer online valuations and in-person consultations. Which one interests you more, or would you like details on both?";
+                } else if (messageText.toLowerCase().includes("contact") || messageText.toLowerCase().includes("call")) {
+                    botText = "You can reach us at contact@estateflow.com or call (555) 123-4567. Is there anything specific I can help you with before you reach out?";
+                } else if (messageText.toLowerCase().includes("services")) {
+                    botText = "We provide free valuations, document checks, home staging, professional photoshoots, finance advice, and marketing strategies. Do any of these catch your eye?";
+                } else if (messageText.toLowerCase().includes("hi") || messageText.toLowerCase().includes("hello") || messageText.toLowerCase().includes("hey")) {
+                    botText = "Hello there! How can I help you with your real estate needs today?";
+                }
+                botResponseDiv.innerHTML = `<p>${botText}</p>`;
+                chatbotMessagesContainer.appendChild(botResponseDiv);
+                chatbotMessagesContainer.scrollTop = chatbotMessagesContainer.scrollHeight;
+            }, 1000);
+        }
+    </script>
+
+</body>
+
+</html>
