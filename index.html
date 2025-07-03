@@ -883,59 +883,63 @@
     Array.from(element.children).forEach(child => replaceClassesRecursively(child, replacements));
 }
 
-function applyTheme(theme) {
-    const replacementsDark = [
-        ['bg-pink-100','bg-gray-900'],
-        ['bg-gray-50','bg-gray-700'],
-        ['bg-gray-200','bg-gray-600'],
-        ['bg-gray-800','bg-gray-500'],
-        ['bg-white','bg-gray-800'],
-        ['text-gray-800','text-gray-100'],
-        ['text-gray-700','text-gray-200'],
-        ['text-gray-600','text-gray-300'],
-        ['border-gray-200','border-gray-700'],
-        ['hover:bg-gray-200','hover:bg-gray-600']
-    ];
-    const replacementsLight = [
-        ['bg-gray-900','bg-pink-100'],
-        ['bg-gray-800','bg-white'],
-        ['bg-gray-700','bg-gray-50'],
-        ['bg-gray-600','bg-gray-200'],
-        ['bg-gray-500','bg-gray-800'],
-        ['text-gray-100','text-gray-800'],
-        ['text-gray-300','text-gray-700'],
-        ['text-gray-200','text-gray-600'],
-        ['border-gray-700','border-gray-200'],
-        ['hover:bg-gray-600','hover:bg-gray-200']
-    ];
-    if (theme === 'dark') {
-        htmlElement.classList.add('dark');
-        replaceClassesRecursively(document.body, replacementsDark);
-        if (themeToggle.querySelector('.material-icons')) themeToggle.querySelector('.material-icons').textContent = 'light_mode';
-        localStorage.setItem('theme', 'dark');
-    } else {
-        htmlElement.classList.remove('dark');
-        replaceClassesRecursively(document.body, replacementsLight);
-        if (themeToggle.querySelector('.material-icons')) themeToggle.querySelector('.material-icons').textContent = 'dark_mode';
-        localStorage.setItem('theme', 'light');
-    }
-}
+//         function applyTheme(theme) {
+//     const replacementsDark = [
+//         ['bg-pink-100','bg-gray-900'],
+//         ['bg-gray-50','bg-gray-700'],
+//         ['bg-gray-200','bg-gray-600'],
+//         ['bg-gray-800','bg-gray-500'],
+//         ['bg-white','bg-gray-800'],
+//         ['text-gray-800','text-gray-100'],
+//         ['text-gray-700','text-gray-200'],
+//         ['text-gray-600','text-gray-300'],
+//         ['border-gray-200','border-gray-700'],
+//         ['hover:bg-gray-200','hover:bg-gray-600']
+//     ];
+//     const replacementsLight = [
+//         ['bg-gray-900','bg-pink-100'],
+//         ['bg-gray-800','bg-white'],
+//         ['bg-gray-700','bg-gray-50'],
+//         ['bg-gray-600','bg-gray-200'],
+//         ['bg-gray-500','bg-gray-800'],
+//         ['text-gray-100','text-gray-800'],
+//         ['text-gray-300','text-gray-700'],
+//         ['text-gray-200','text-gray-600'],
+//         ['border-gray-700','border-gray-200'],
+//         ['hover:bg-gray-600','hover:bg-gray-200']
+//     ];
+//     if (theme === 'dark') {
+//         htmlElement.classList.add('dark');
+//         replaceClassesRecursively(document.body, replacementsDark);
+//         if (themeToggle.querySelector('.material-icons')) themeToggle.querySelector('.material-icons').textContent = 'light_mode';
+//         localStorage.setItem('theme', 'dark');
+//     } else {
+//         htmlElement.classList.remove('dark');
+//         replaceClassesRecursively(document.body, replacementsLight);
+//         if (themeToggle.querySelector('.material-icons')) themeToggle.querySelector('.material-icons').textContent = 'dark_mode';
+//         localStorage.setItem('theme', 'light');
+//     }
+// }
         
-        // Check for saved theme preference or use system preference
-        const savedTheme = localStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-            applyTheme('dark');
-        } else {
-            applyTheme('light');
-        }
-        themeToggle.addEventListener('click', () => {
-            if (htmlElement.classList.contains('dark')) {
-                applyTheme('light');
-            } else {
-                applyTheme('dark');
-            }
-        });
+//         // Check for saved theme preference or use system preference
+//         const savedTheme = localStorage.getItem('theme');
+//         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+//         if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+//             applyTheme('dark');
+//         } else {
+//             applyTheme('light');
+//         }
+//         themeToggle.addEventListener('click', () => {
+//             if (htmlElement.classList.contains('dark')) {
+//                 applyTheme('light');
+//             } else {
+//                 applyTheme('dark');
+//             }
+//         });
+        
+        
+
+
         // FAQ Accordion
         const faqQuestions = document.querySelectorAll('.faq-question');
         faqQuestions.forEach(button => {
